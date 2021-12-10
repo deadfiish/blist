@@ -1,0 +1,37 @@
+syntax = "proto3";
+package iritamod.blist;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+
+option go_package = "github.com/bianjieai/iritamod/modules/blist/types";
+
+service Query {
+  rpc QueryBListByName(QueryBListByNameRequest) returns (QueryBListByNameResponse) {
+    option (google.api.http).get = "/ethermint/evm/v1/blist/{name}";
+  }
+  rpc QueryBList(QueryBListRequest) returns (QueryBListResponse) {
+    option (google.api.http).get = "/ethermint/evm/v1/blist";
+  }
+}
+
+message QueryBListByNameRequest {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string name = 1;
+}
+
+message QueryBListByNameResponse {
+  bool exist = 1;
+}
+
+message QueryBListRequest {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+}
+
+message QueryBListResponse {
+  repeated string blist = 1;
+}

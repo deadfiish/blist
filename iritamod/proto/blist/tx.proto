@@ -1,0 +1,29 @@
+syntax = "proto3";
+package iritamod.blist;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/bianjieai/iritamod/modules/blist/types";
+option (gogoproto.goproto_getters_all) = false;
+
+
+service Msg {
+  rpc MsgAddToBList(MsgAddToBListRequest) returns (MsgAddToBListResponse);
+  rpc MsgRemoveFromBList(MsgRemoveFromBListRequest) returns (MsgRemoveFromBListResponse);
+}
+
+message MsgAddToBListRequest {
+  option (gogoproto.goproto_getters) = false;
+
+  string name = 1;
+}
+
+message MsgAddToBListResponse{}
+
+
+message MsgRemoveFromBListRequest {
+  option (gogoproto.goproto_getters) = false;
+
+  string name = 1;
+}
+message MsgRemoveFromBListResponse{}
