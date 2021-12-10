@@ -76,6 +76,10 @@ import (
 	"github.com/bianjieai/iritamod/modules/wevm"
 	wevmkeeper "github.com/bianjieai/iritamod/modules/wevm/keeper"
 	wevmtypes "github.com/bianjieai/iritamod/modules/wevm/types"
+
+	"github.com/bianjieai/iritamod/modules/blist"
+	blistkeeper "github.com/bianjieai/iritamod/modules/blist/keeper"
+	blisttypes "github.com/bianjieai/iritamod/modules/blist/types"
 )
 
 const appName = "SimApp"
@@ -106,6 +110,7 @@ var (
 		identity.AppModuleBasic{},
 		node.AppModuleBasic{},
 		wevm.AppModuleBasic{},
+		blist.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -150,6 +155,7 @@ type SimApp struct {
 	NodeKeeper     nodekeeper.Keeper
 	FeeGrantKeeper feegrantkeeper.Keeper
 	WevmKeeper     wevmkeeper.Keeper
+	BListKeeper	   blistkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -200,6 +206,7 @@ func NewSimApp(
 		identitytypes.StoreKey,
 		nodetypes.StoreKey,
 		wevmtypes.StoreKey,
+		blisttypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -251,7 +258,7 @@ func NewSimApp(
 	app.IdentityKeeper = identitykeeper.NewKeeper(appCodec, keys[identitytypes.StoreKey])
 
 	app.WevmKeeper = wevmkeeper.NewKeeper(appCodec, keys[wevmtypes.StoreKey])
-
+	app.BListKeeper = blistkeeper.NewKeeper(appCodec, keys[blisttypes.StoreKey])
 	/****  Module Options ****/
 
 	// NOTE: we may consider parsing `appOpts` inside module constructors. For the moment
@@ -275,6 +282,7 @@ func NewSimApp(
 		identity.NewAppModule(app.IdentityKeeper),
 		node.NewAppModule(appCodec, app.NodeKeeper),
 		wevm.NewAppModule(app.WevmKeeper),
+		blist.NewAppModule(app.BListKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -303,6 +311,7 @@ func NewSimApp(
 		identitytypes.ModuleName,
 		feegrant.ModuleName,
 		wevmtypes.ModuleName,
+		blisttypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -329,6 +338,7 @@ func NewSimApp(
 		identity.NewAppModule(app.IdentityKeeper),
 		node.NewAppModule(appCodec, app.NodeKeeper),
 		wevm.NewAppModule(app.WevmKeeper),
+		blist.NewAppModule(app.BListKeeper),
 	)
 
 	app.sm.RegisterStoreDecoders()
