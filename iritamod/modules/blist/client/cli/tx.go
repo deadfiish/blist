@@ -8,20 +8,28 @@ import (
 
 	"github.com/bianjieai/iritamod/modules/blist/types"
 )
-
 func NewTxCmd() *cobra.Command {
-	BListTxCmd := &cobra.Command{
+	blistTxCmd := &cobra.Command{
 		Use:                        types.ModuleName,
+		Short:                      "BList transaction subcommands",
+		DisableFlagParsing:         true,
+		SuggestionsMinimumDistance: 2,
+		RunE:                       client.ValidateCmd,
+	}
+	blacklistTxCmd := &cobra.Command{
+		Use:                        types.BListName,
 		Short:                      "blist transaction subcommands",
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
-	BListTxCmd.AddCommand(
+	blacklistTxCmd.AddCommand(
 		AddToBList(),
 		RemoveFromBList(),
 	)
-	return BListTxCmd
+	blistTxCmd.AddCommand(blacklistTxCmd)
+
+	return blistTxCmd
 }
 
 func AddToBList() *cobra.Command {
@@ -44,6 +52,7 @@ func AddToBList() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
+
 	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
@@ -68,6 +77,7 @@ func RemoveFromBList() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
+
 	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }

@@ -9,19 +9,27 @@ import (
 
 // GetQueryCmd returns the cli query commands for this module
 func GetQueryCmd() *cobra.Command {
-	BListQueryCmd := &cobra.Command{
+	blistQueryCmd := &cobra.Command{
 		Use:                        types.ModuleName,
 		Short:                      " blist ",
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
+	blacklistQueryCmd := &cobra.Command{
+		Use:                        types.BListName,
+		Short:                      " blacklist ",
+		DisableFlagParsing:         true,
+		SuggestionsMinimumDistance: 2,
+		RunE:                       client.ValidateCmd,
+	}
 
-	BListQueryCmd.AddCommand(
+	blacklistQueryCmd.AddCommand(
 		GetBListByName(),
 		GetBList(),
 	)
-	return BListQueryCmd
+	blistQueryCmd.AddCommand(blacklistQueryCmd)
+	return blistQueryCmd
 }
 
 func GetBListByName() *cobra.Command {
@@ -53,7 +61,6 @@ func GetBList() *cobra.Command {
 		Use:   "all",
 		Short: "query blist",
 		Long:  "query blist",
-		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {

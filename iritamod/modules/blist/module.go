@@ -88,7 +88,7 @@ type AppModule struct {
 // NewAppModule creates a new AppModule object
 func NewAppModule(keeper keeper.Keeper) AppModule {
 	return AppModule{
-		AppModuleBasic: AppModuleBasic{},
+		AppModuleBasic: AppModuleBasic {},
 		keeper:         keeper,
 	}
 }

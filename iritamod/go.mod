@@ -23,7 +23,6 @@ require (
 	github.com/tjfoc/gmsm v1.4.0
 	google.golang.org/genproto v0.0.0-20211116182654-e63d96a377c4
 	google.golang.org/grpc v1.41.0
-	google.golang.org/protobuf v1.27.1
 )
 
 replace (

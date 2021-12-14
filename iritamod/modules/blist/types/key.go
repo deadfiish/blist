@@ -6,18 +6,18 @@ import (
 
 const (
 	// ModuleName string name of module
-	ModuleName = "BList"
+	ModuleName = "blist"
 
 	StoreKey = ModuleName
 
 	// RouterKey uses module name for routing
 	RouterKey = ModuleName
 
-	BListName = "BList"
+	BListName = ModuleName
 )
 
 const (
-	KeyPrefixBList = "BList"
+	KeyPrefixBList = "blist"
 )
 
 func BListPath(name string) string {
